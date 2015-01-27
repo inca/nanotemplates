@@ -1,7 +1,14 @@
 "use strict";
 
 var Nano = require('../lib/nano')
+  , fs = require('fs')
   , assert = require('assert');
+
+function assertHtml(actual, expected) {
+  actual = actual.replace(/\s+</g, '<').replace(/>\s+/g, '>');
+  expected = expected.replace(/\s+</g, '<').replace(/>\s+/g, '>');
+  assert.equal(actual, expected);
+}
 
 describe('Nano', function() {
 
@@ -12,8 +19,11 @@ describe('Nano', function() {
   it('should process includes', function(cb) {
     nano.render('includes/index.html', function(err, html) {
       if (err) return cb(err);
-      console.log(html);
-      cb();
+      fs.readFile(__dirname + '/templates/includes/result.html', 'utf-8', function(err, expected) {
+        if (err) return cb(err);
+        assertHtml(html, expected);
+        cb();
+      });
     })
   });
 
