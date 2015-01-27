@@ -1,0 +1,29 @@
+{
+  "name": "nanotemplates",
+  "version": "0.0.0",
+  "description": "Nanotemplates",
+  "main": "lib/nano.js",
+  "dependencies": {
+    "async": "*"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inca/nanotemplates"
+  },
+  "keywords": [
+    "template",
+    "engine"
+  ],
+  "author": "Boris Okunskiy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/inca/nanotemplates/issues"
+  },
+  "homepage": "https://github.com/inca/nanotemplates"
+}
