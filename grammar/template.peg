@@ -16,17 +16,17 @@ IncludeSelfClosing
   = tag: IncludeTagStart '/>'
   {
     return {
-      node: 'include',
+      type: 'include',
       file: tag.file,
       defs: []
     }
   }
 
 IncludeWithDefs
-  = tag: IncludeTagStart '>' ws* defs:Def* ws* '</include' ws* '>'
+  = tag: IncludeTagStart '>' ws* defs:Def* '</include' ws* '>'
   {
     return {
-      node: 'include',
+      type: 'include',
       file: tag.file,
       defs: defs
     }
@@ -48,11 +48,9 @@ Def "def"
     '</' _def: DefTag & { return def == _def }
     ':'
     _name: VarName & { return name == _name }
-    ws* '>'
-    
+    ws* '>' ws*
   {
     return {
-      node: 'def',
       mode: def,
       name: name,
       nodes: nodes
@@ -67,14 +65,27 @@ DefTag
 // Blocks
 
 Block
+  = BlockSelfClosing
+  / BlockWithContent
+
+BlockSelfClosing
+  = '<block:' name: VarName ws* '/>'
+  {
+    return {
+      type: 'block',
+      name: name,
+      nodes: []
+    }
+  }
+
+BlockWithContent
   = '<block:' name: VarName ws* '>'
     nodes: Nodes
     '</block:' _name: VarName & { return name == _name }
     ws* '>'
-
   {
     return {
-      node: 'block',
+      type: 'block',
       name: name,
       nodes: nodes
     }
@@ -93,7 +104,6 @@ PlainToken
     !'def'
     !'append'
     !'prepend'
-    
 
 // Commons
 

@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+"use strict";
+
+var Nano = require('../lib/nano')
+  , nomnom = require('nomnom');
+
+var opts = nomnom
+  .option('file', {
+    position: 0,
+    help: 'input file',
+    required: true
+  })
+  .option('basedir', {
+    abbr: 'b',
+    help: 'base directory',
+    default: process.cwd()
+  })
+  .parse();
+
+// Read entire input
+
+var nano = new Nano({
+  basedir: opts.basedir
+});
+
+nano.render(opts.file, function(err, html) {
+  if (err) {
+    console.trace(err);
+    process.exit(1);
+  }
+  process.stdout.write(html);
+  process.exit(0);
+});

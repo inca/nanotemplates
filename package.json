@@ -4,7 +4,10 @@
   "description": "Nanotemplates",
   "main": "lib/nano.js",
   "dependencies": {
-    "async": "*"
+    "async": "*",
+    "grunt": "*",
+    "grunt-peg": "*",
+    "nomnom": "*"
   },
   "devDependencies": {
     "mocha": "*"
