@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Nanotemplates",
   "main": "lib/nano.js",
+  "bin": {
+    "ntl": "bin/ntl"
+  },
   "dependencies": {
     "async": "*",
     "grunt": "*",

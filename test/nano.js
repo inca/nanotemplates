@@ -28,9 +28,9 @@ describe('Nano', function() {
 
   it('should process simple includes', function(done) {
 
-    nano.render('simpleIncludes/index.html', function(err, html) {
+    nano.render('includes/index.html', function(err, html) {
       if (err) return done(err);
-      assertHtmlFile(html, 'simpleIncludes/_index.html', done);
+      assertHtmlFile(html, 'includes/_index.html', done);
     });
 
   });
@@ -49,6 +49,15 @@ describe('Nano', function() {
     nano.render('layouts/users/list.html', function(err, html) {
       if (err) return done(err);
       assertHtmlFile(html, 'layouts/users/_list.html', done);
+    });
+
+  });
+
+  it('should maintain def scopes', function(done) {
+
+    nano.render('localdefs/index.html', function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'localdefs/_index.html', done);
     });
 
   });
