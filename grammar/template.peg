@@ -51,6 +51,7 @@ Def "def"
     ws* '>' ws*
   {
     return {
+      type: 'def',
       mode: def,
       name: name,
       nodes: nodes
