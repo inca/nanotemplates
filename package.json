@@ -1,6 +1,6 @@
 {
   "name": "nanotemplates",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Nanotemplates",
   "main": "lib/nano.js",
   "bin": {
