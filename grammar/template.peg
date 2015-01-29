@@ -124,7 +124,7 @@ ExpressionTokens
 
 ExpressionToken
   = StringLiteral
-  / [^}\n\r\u2028\u2029"']
+  / [^}{\n\r\u2028\u2029"']
 
 StringLiteral "string"
   = '"' DoubleStringCharacter* '"'
@@ -150,13 +150,14 @@ Plain "plain text"
   = $(PlainToken+)
 
 PlainToken
-  = [^<]
+  = [^<#!]
   / '<' '/'?
     !'include'
     !'block'
     !'def'
     !'append'
     !'prepend'
+  / [#!] !'{'
 
 // Commons
 
