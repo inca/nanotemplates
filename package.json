@@ -10,7 +10,8 @@
     "async": "*",
     "grunt": "*",
     "grunt-peg": "*",
-    "nomnom": "*"
+    "nomnom": "*",
+    "jsep": "*"
   },
   "devDependencies": {
     "mocha": "*"

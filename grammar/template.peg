@@ -4,11 +4,12 @@ Nodes
 Node
   = Include
   / Block
+  / Expression
   / Plain
 
 // Includes
 
-Include
+Include "include"
   = IncludeSelfClosing
   / IncludeWithDefs
 
@@ -42,7 +43,7 @@ IncludeTagStart
 
 // Defs
 
-Def "def"
+Def "definition"
   = '<' def: DefTag ':' name: VarName ws* '>'
     nodes: Nodes
     '</' _def: DefTag & { return def == _def }
@@ -65,7 +66,7 @@ DefTag
 
 // Blocks
 
-Block
+Block "block"
   = BlockSelfClosing
   / BlockWithContent
 
@@ -92,6 +93,57 @@ BlockWithContent
     }
   }
 
+// Expression
+
+Expression "expression"
+  = EscapedExpression
+  / UnescapedExpression
+
+EscapedExpression
+  = '#{' expr: $(ExpressionTokens) '}'
+  {
+    return {
+      type: 'expr',
+      escape: true,
+      expr: expr
+    }
+  }
+
+UnescapedExpression
+  = '!{' expr: $(ExpressionTokens) '}'
+  {
+    return {
+      type: 'expr',
+      escape: false,
+      expr: expr
+    }
+  }
+
+ExpressionTokens
+  = ExpressionToken+
+
+ExpressionToken
+  = StringLiteral
+  / [^}\n\r\u2028\u2029"']
+
+StringLiteral "string"
+  = '"' DoubleStringCharacter* '"'
+  / "'" SingleStringCharacter* "'"
+
+DoubleStringCharacter
+  = !'"' !'\\' SourceCharacter
+  / EscapeSequence
+
+SingleStringCharacter
+  = !"'" !'\\' SourceCharacter
+  / EscapeSequence
+
+SourceCharacter
+  = [^\n\r\u2028\u2029]
+
+EscapeSequence
+  = '\\' SourceCharacter
+
 // Plain text
 
 Plain "plain text"
@@ -116,18 +168,12 @@ AttrValue "attribute value"
   / DoubleQuoteString
 
 SingleQuoteString "string"
-  = "'" chars:$(SingleQuoteChar*) "'"
+  = "'" chars:$([^']*) "'"
   { return chars }
 
 DoubleQuoteString "string"
-  = '"' chars:$(DoubleQuoteChar*) '"'
+  = '"' chars:$([^"]*) '"'
   { return chars }
-
-SingleQuoteChar
-  = [^']
-
-DoubleQuoteChar
-  = [^"]
 
 ws "whitespace"
   = [ \t\n\r]
