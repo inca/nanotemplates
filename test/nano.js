@@ -71,4 +71,13 @@ describe('Nano', function() {
 
   });
 
+  it('should process vars with respect to scopes', function(done) {
+
+    nano.render('vars/index.html', function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'vars/_index.html', done);
+    });
+
+  });
+
 });

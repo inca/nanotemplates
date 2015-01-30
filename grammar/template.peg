@@ -105,7 +105,7 @@ BlockWithContent
 
 Var
   = '<var:' name: VarName ws* '>'
-    expr: $(ExpressionTokens)
+    expr: $(Plain)
     '</var:' _name: VarName & { return name == _name }
     ws* '>'
   {
@@ -163,7 +163,6 @@ ExpressionToken
   = StringLiteral
   / ObjectLiteral
   / [^}{"'<]
-  / '<' !'/var'
 
 ObjectLiteral
   = '{' ExpressionTokens '}'
