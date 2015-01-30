@@ -11,7 +11,7 @@
     "grunt": "*",
     "grunt-peg": "*",
     "nomnom": "*",
-    "jsep": "*"
+    "angular-expressions": "*"
   },
   "devDependencies": {
     "mocha": "*"

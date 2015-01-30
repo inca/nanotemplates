@@ -62,4 +62,13 @@ describe('Nano', function() {
 
   });
 
+  it('should execute expressions', function(done) {
+
+    nano.render('expressions/index.html', function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'expressions/_index.html', done);
+    });
+
+  });
+
 });
