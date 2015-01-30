@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 "use strict";
 
-var Nano = require('../lib/nano')
+var Compiler = require('../lib/compiler')
   , nomnom = require('nomnom');
 
 var opts = nomnom
@@ -17,15 +17,15 @@ var opts = nomnom
   })
   .parse();
 
-var nano = new Nano({
+var compiler = new Compiler({
   basedir: opts.basedir
 });
 
-nano.render(opts.file, function(err, html) {
+compiler.compile(opts.file, function(err, fn) {
   if (err) {
     console.trace(err);
     process.exit(1);
   }
-  process.stdout.write(html);
+  process.stdout.write(fn.toString());
   process.exit(0);
 });

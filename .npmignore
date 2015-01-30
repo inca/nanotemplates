@@ -25,3 +25,5 @@ nohup.out
 
 node_modules/
 test/
+
+work/

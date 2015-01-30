@@ -24,3 +24,5 @@ nohup.out
 # NodeJS
 
 node_modules/
+
+work/
