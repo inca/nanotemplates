@@ -4,6 +4,7 @@ Nodes
 Node
   = Include
   / Block
+  / Var
   / Expression
   / Plain
 
@@ -19,17 +20,17 @@ IncludeSelfClosing
     return {
       type: 'include',
       file: tag.file,
-      defs: []
+      nodes: []
     }
   }
 
 IncludeWithDefs
-  = tag: IncludeTagStart '>' ws* defs:Def* '</include' ws* '>'
+  = tag: IncludeTagStart '>' ws* nodes:IncludeNodes '</include' ws* '>'
   {
     return {
       type: 'include',
       file: tag.file,
-      defs: defs
+      nodes: nodes
     }
   }
 
@@ -41,6 +42,13 @@ IncludeTagStart
     }
   }
 
+IncludeNodes
+  = IncludeNode*
+
+IncludeNode
+  = node: Def ws* { return node }
+  / node: Var ws* { return node }
+
 // Defs
 
 Def "definition"
@@ -49,7 +57,7 @@ Def "definition"
     '</' _def: DefTag & { return def == _def }
     ':'
     _name: VarName & { return name == _name }
-    ws* '>' ws*
+    ws* '>'
   {
     return {
       type: 'def',
@@ -90,6 +98,21 @@ BlockWithContent
       type: 'block',
       name: name,
       nodes: nodes
+    }
+  }
+
+// Var
+
+Var
+  = '<var:' name: VarName ws* '>'
+    expr: $(ExpressionTokens)
+    '</var:' _name: VarName & { return name == _name }
+    ws* '>'
+  {
+    return {
+      type: 'var',
+      name: name,
+      expr: expr
     }
   }
 
@@ -139,7 +162,8 @@ ExpressionTokens
 ExpressionToken
   = StringLiteral
   / ObjectLiteral
-  / [^}{"']
+  / [^}{"'<]
+  / '<' !'/var'
 
 ObjectLiteral
   = '{' ExpressionTokens '}'
@@ -175,6 +199,7 @@ PlainToken
     !'def'
     !'append'
     !'prepend'
+    !'var'
   / [#!$] !'{'
 
 // Commons
