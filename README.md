@@ -4,15 +4,12 @@ Miniature framework for composing static HTML pages.
 
 Key features:
 
-  * **safety** — no JavaScript runtime in templates,
-
-  * **flexible** include engine — accomplish your most complex layout scenarios
-    in a DRY manner
+  * **safety** — runtime is done via Angular expressions engine (which is considered safe),
 
   * **intuitive** — extremely simple
 
   * **IDE-friendly** — templates are based on custom HTML tags, so you don't have
-    to install custom code highlighters
+    to install code highlighters
 
 ## Usage
 
@@ -135,6 +132,23 @@ Rendered index.html:
 ## Grammar
 
 A [PegJS](http://pegjs.org) grammar [is available](https://github.com/inca/nanotemplates/tree/master/grammar/template.peg).
+
+## Notes on compilation
+
+Tags like `include`, `inline`, `block`, `def`, `append`, `prepend`, etc. are
+compiled _statically_. This means no support for dynamic includes (sorry), but
+OTOH you can cache statically compiled functions for rendering same templates with different data almost at the light speed.
+
+Compilation is done like this:
+
+  * AST nodes are visited recursively with `_process_<nodetype>` methods;
+  * each method returns a string statement (code);
+  * you can use stuff from `runtime.js` in statements (but not in templates themselves);
+  * buffered statements (the ones that actually spit content) look like `out.push(something)`;
+  * expressions are compiled via Angular Expressions library, each expression is pushed into an array and becomes available inside code via `$$[<index>]`;
+  * `locals` object is the data you provide to compiled function at rendering stage;
+  * every scope-sensitive code is wrapped into a function, which copies locals object;
+  * all statements are simply joined with semicolon and are wrapped into `function(locals) { }`
 
 ## License
 
