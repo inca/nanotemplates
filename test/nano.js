@@ -89,4 +89,31 @@ describe('Nano', function() {
 
   });
 
+  it('should process if statements without locals', function(done) {
+
+    nano.render('if/index.html', function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'if/_undefined.html', done);
+    });
+
+  });
+
+  it('should process if when cases', function(done) {
+
+    nano.render('if/index.html', { friends: 2 }, function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'if/_2.html', done);
+    });
+
+  });
+
+  it('should process if otherwise cases', function(done) {
+
+    nano.render('if/index.html', { friends: 100500 }, function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'if/_100500.html', done);
+    });
+
+  });
+
 });
