@@ -80,4 +80,13 @@ describe('Nano', function() {
 
   });
 
+  it('should process inlines', function(done) {
+
+    nano.render('inlines/index.html', function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'inlines/_index.html', done);
+    });
+
+  });
+
 });
