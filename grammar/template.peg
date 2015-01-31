@@ -6,6 +6,7 @@ Node
   / Inline
   / Block
   / Var
+  / FlowControl
   / Expression
   / Plain
 
@@ -179,7 +180,84 @@ ExpressionToken
 ObjectLiteral
   = '{' ExpressionTokens '}'
 
-StringLiteral "string"
+// Flow control
+
+FlowControl
+  = IfStatement
+
+IfStatement "if"
+  = '<if>' ws* when: When+ otherwise: Otherwise? '</if>'
+  {
+    return {
+      type: 'if',
+      when: when,
+      otherwise: otherwise
+    }
+  }
+
+When
+  = '<when' ws+ 'expr' ws* '=' ws* expr:AttrValue ws* '>'
+    nodes: Nodes
+    '</when>' ws*
+  {
+    return {
+      type: 'when',
+      expr: expr,
+      nodes: nodes
+    }
+  }
+
+Otherwise
+  = '<otherwise>'
+    nodes: Nodes
+    '</otherwise>' ws*
+  {
+    return {
+      type: 'otherwise',
+      nodes: nodes
+    }
+  }
+
+// Plain text
+
+Plain "plain text"
+  = $(PlainToken+)
+
+PlainToken
+  = [^<#!$]
+  / '<' '/'?
+    !'include'
+    !'inline'
+    !'block'
+    !'def'
+    !'append'
+    !'prepend'
+    !'if'
+    !'case'
+    !'when'
+    !'otherwise'
+    !'each'
+    !'var'
+  / [#!$] !'{'
+
+// Commons
+
+VarName "variable name"
+  = $( [a-z] [a-zA-Z0-9_]* )
+
+AttrValue "attribute value" // without escape sequences
+  = SingleQuoteString
+  / DoubleQuoteString
+
+SingleQuoteString "string"
+  = "'" chars:$([^']*) "'"
+  { return chars }
+
+DoubleQuoteString "string"
+  = '"' chars:$([^"]*) '"'
+  { return chars }
+
+StringLiteral "string" // with escape sequences
   = '"' DoubleStringCharacter* '"'
   / "'" SingleStringCharacter* "'"
 
@@ -197,39 +275,6 @@ SourceCharacter
 EscapeSequence
   = '\\' SourceCharacter
 
-// Plain text
-
-Plain "plain text"
-  = $(PlainToken+)
-
-PlainToken
-  = [^<#!$]
-  / '<' '/'?
-    !'include'
-    !'inline'
-    !'block'
-    !'def'
-    !'append'
-    !'prepend'
-    !'var'
-  / [#!$] !'{'
-
-// Commons
-
-VarName "variable name"
-  = $( [a-z] [a-zA-Z0-9_]* )
-
-AttrValue "attribute value"
-  = SingleQuoteString
-  / DoubleQuoteString
-
-SingleQuoteString "string"
-  = "'" chars:$([^']*) "'"
-  { return chars }
-
-DoubleQuoteString "string"
-  = '"' chars:$([^"]*) '"'
-  { return chars }
-
 ws "whitespace"
   = [ \t\n\r]
+

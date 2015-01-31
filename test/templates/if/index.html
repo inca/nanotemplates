@@ -1,0 +1,14 @@
+<if>
+  <when expr="friends == 0">
+    <p>You have no friends.</p>
+  </when>
+  <when expr="friends == 1">
+    <p>You have a friend.</p>
+  </when>
+  <when expr="friends > 1 && friends < 5">
+    <p>You have a few friends.</p>
+  </when>
+  <otherwise>
+    <p>You have many friends.</p>
+  </otherwise>
+</if>
