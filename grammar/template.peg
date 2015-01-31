@@ -3,6 +3,7 @@ Nodes
 
 Node
   = Include
+  / Inline
   / Block
   / Var
   / Expression
@@ -48,6 +49,17 @@ IncludeNodes
 IncludeNode
   = node: Def ws* { return node }
   / node: Var ws* { return node }
+
+// Inline
+
+Inline
+  = '<inline' ws+ 'file' ws* '=' ws* file:AttrValue ws* '/>'
+  {
+    return {
+      type: 'inline',
+      file: file
+    }
+  }
 
 // Defs
 
@@ -194,6 +206,7 @@ PlainToken
   = [^<#!$]
   / '<' '/'?
     !'include'
+    !'inline'
     !'block'
     !'def'
     !'append'
