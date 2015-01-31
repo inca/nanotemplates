@@ -1,15 +1,17 @@
 # Nanotemplates
 
-Minimalistic template engine for composing HTML pages in a DRY fashion.
+Minimalistic template engine for composing DRY HTML pages.
 
-Key features:
+## Key features
 
-  * **safety** — runtime is done via Angular expressions engine (which is considered safe),
+  * **Safety** — runtime is done via Angular expressions engine (which is considered safe),
 
-  * **intuitive** — extremely simple, yet enormously powerful
+  * **Intuitive** — extremely simple, yet enormously powerful
 
   * **IDE-friendly** — templates are based on custom HTML tags, so you don't have
     to install code highlighters
+
+  * **Performance** — once compiled the templates can be cached to provide light-speed rendering
 
 Nanotemplates are best suited for HTML rendering, but you can use them to
 render virtually any text.
@@ -46,7 +48,7 @@ Like with almost every other template engines, Nanotemplates are processed in tw
 
   * _compiling_ involves loading files, parsing them, processing compile-time stuff and generating a reusable template function;
 
-  * _rendering_ is simply calling the template function with data object
+  * _rendering_ involves invoking the template function with data object
 
 Once template function is compiled it can be invoked with different data objects.
 It is generally a good practice to cache compiled functions in production
@@ -370,6 +372,21 @@ Compilation is done like this:
   * `locals` object is the data you provide to compiled function at rendering stage;
   * every scope-sensitive code is wrapped into a function, which copies locals object;
   * all statements are simply joined with semicolon and are wrapped into `function(locals) { }`
+
+## Premise
+
+There are lots of template engines for Node.js, both [simple](http://underscorejs.org) and [monstrous](http://jade-lang.com).
+
+Just like you we hate reinventing the wheels. However, we started this project, because, apparently, no template engine out there can simultaneously meet three following conditions:
+
+  * does not allow arbitrary JavaScript execution like `for (;;) { }`, so that
+    it could be used by untrusted users;
+  * is flexible enough to write almost any app you could think of (i.e.
+    supports includes, layouts, scoping, etc, etc, etc);
+  * provides abstraction layer over file system (e.g. to be able to load
+    templates from database or via network)
+
+We hope that Nanotemplates are what you are expecting them to be.
 
 ## License
 
