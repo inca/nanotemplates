@@ -181,6 +181,7 @@ ObjectLiteral
 FlowControl
   = IfStatement
   / CaseStatement
+  / EachStatement
 
 IfStatement "if"
   = '<if>' ws* when: When+ otherwise: Otherwise? '</if>'
@@ -216,8 +217,8 @@ Otherwise "otherwise"
   }
 
 CaseStatement "case"
-  = '<case:' name: VarName ws+ 'expr' ws* '=' ws* expr: AttrValue ws* '>'
-     ws* when: When+ otherwise: Otherwise?
+  = '<case:' name: VarName ws+ 'expr' ws* '=' ws* expr: AttrValue ws* '>' ws*
+    when: When+ otherwise: Otherwise?
     '</case:' _name: VarName & { return name == _name } '>'
   {
     return {
@@ -226,6 +227,19 @@ CaseStatement "case"
       expr: expr,
       when: when,
       otherwise: otherwise
+    }
+  }
+
+EachStatement "each"
+  = '<each:' name: VarName ws+ 'in' ws* '=' ws* expr: AttrValue ws* '>' ws*
+    nodes: Nodes
+    '</each:' _name: VarName & { return name == _name } '>'
+  {
+    return {
+      type: 'each',
+      name: name,
+      expr: expr,
+      nodes: nodes
     }
   }
 

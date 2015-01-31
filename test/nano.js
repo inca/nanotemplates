@@ -26,6 +26,12 @@ describe('Nano', function() {
     basedir: __dirname + '/templates'
   });
 
+  var users = [
+    { name: 'Alice' },
+    { name: 'Joe' },
+    { name: 'Jane' }
+  ];
+
   it('should process simple includes', function(done) {
 
     nano.render('includes/index.html', function(err, html) {
@@ -149,6 +155,26 @@ describe('Nano', function() {
       if (err) return done(err);
       assertHtmlFile(html, 'case/_100500.html', done);
     });
+
+  });
+
+  it('should process each statements with arrays', function(done) {
+
+    nano.render('each/index.html', { users: users }, function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'each/_array.html', done);
+    });
+
+  });
+
+  it('should process each statements with objects', function(done) {
+
+    nano.render('each/index.html',
+      { users: { alice: 'Alice', bob: 'Bob' } },
+      function(err, html) {
+        if (err) return done(err);
+        assertHtmlFile(html, 'each/_object.html', done);
+      });
 
   });
 
