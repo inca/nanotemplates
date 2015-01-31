@@ -279,6 +279,77 @@ Case statements resemble regular switch-case, but allow matching non-declarative
 
 In this example `friends` expression is evaluated and becomes accessible as local variable `e`.
 
+### Each Statement
+
+To iterate over collections (arrays or objects) use `<each:varName in="collection">...`.
+
+#### Each with Array
+
+Let's say your data looks like this:
+
+```
+{
+  users: [
+    { name: 'Alice' },
+    { name: 'Joe' },
+    { name: 'Jane' }
+  ];
+}
+```
+
+And your template like this:
+
+    <ul>
+      <each:user in="users">
+        <li>#{user_index}: #{user.name}</li>
+      </each:user>
+    </ul>
+
+Here's what will be rendered:
+
+    <ul>
+      <li>0: Alice</li>
+      <li>1: Joe</li>
+      <li>2: Jane</li>
+    </ul>
+
+There you define the `user` variable which will hold the value on each iteration.
+Additionally, the `user_index` will contain the numeric zero-based index of
+an element on each iteration.
+
+#### Each with Object
+
+Let's say your data looks like this:
+
+```
+{
+  users: {
+    alice: 'Alice',
+    bob: 'Bob'
+  };
+}
+```
+
+And your template like this:
+
+    <ul>
+      <each:user in="users">
+        <li>#{user_key}: #{user}</li>
+      </each:user>
+    </ul>
+
+Here's what will be rendered:
+
+    <ul>
+      <li>alice: Alice</li>
+      <li>bob: Bob</li>
+    </ul>
+
+Again, `user` variable holds the value on each iteration.
+Additionally, the key is bound to `user_key` variable.
+
+Keys are always sorted in alphabetical order.
+
 ## Grammar
 
 A [PegJS](http://pegjs.org) grammar [is available](https://github.com/inca/nanotemplates/tree/master/grammar/template.peg).

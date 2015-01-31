@@ -1,7 +1,7 @@
 ${user = 'don\'t'}
 <ul>
   <each:user in="users">
-    <li>#{user.name || user_key}</li>
+    <li>#{user_key}: #{user.name || user}</li>
   </each:user>
 </ul>
 <p>Locals #{user} leak!</p>
