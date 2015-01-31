@@ -1,15 +1,18 @@
 # Nanotemplates
 
-Miniature framework for composing static HTML pages.
+Minimalistic template engine for composing HTML pages in a DRY fashion.
 
 Key features:
 
   * **safety** — runtime is done via Angular expressions engine (which is considered safe),
 
-  * **intuitive** — extremely simple
+  * **intuitive** — extremely simple, yet enormously powerful
 
   * **IDE-friendly** — templates are based on custom HTML tags, so you don't have
     to install code highlighters
+
+Nanotemplates are best suited for HTML rendering, but you can use them to
+render virtually any text.
 
 ## Usage
 
@@ -20,10 +23,16 @@ var nano = require('nanotemplates')({
 });
 
 // Render file
-nano.render('path/to/template.html', function(err, html) {
+nano.render('path/to/template.html', { data: 'values' }, function(err, html) {
   // ...
 });
-``
+
+// Compile into reusable template
+nano.compile('path/to/template.html', function(err, fn) {
+  // ...
+  fn({ data: 'values' });
+});
+```
 
 Templates are resolved relatively to `basedir`. Paths inside include tags are
 relative to their call site (e.g. including `../layout.html` from
@@ -31,61 +40,71 @@ relative to their call site (e.g. including `../layout.html` from
 
 Referencing templates outside `basedir` is not allowed.
 
-## Nanotemplate Syntax
+## Compiling and rendering
 
-Note: examples below are written in HTML, but you can use Nanotemplates
-to render any file type. Remember, Nanotemplates only recognize a small subset
-of tags and do not care about anything else.
+Like with almost every other template engines, Nanotemplates are processed in two phases:
+
+  * _compiling_ involves loading files, parsing them, processing compile-time stuff and generating a reusable template function;
+
+  * _rendering_ is simply calling the template function with data object
+
+Once template function is compiled it can be invoked with different data objects.
+It is generally a good practice to cache compiled functions in production
+to speed things up.
+
+## Templates Syntax — Static Constructs
+
+Following features are processed _statically_ (at compile time).
 
 ### Includes
 
-Content fragments can be extracted into separate files and then reused via
-`<include file="path/to/fragment"/>`.
+One file can be included into another one with `<include file="path/to/file"/>`.
+
+Paths that start with `/` are relative to `basedir`, all other paths are relative
+to the file where they are used.
+
+Simple includes are useful for reusing fragments.
+
+Includes are processed statically, so there is currently no support for dynamic values in paths (sorry about that).
 
 #### Example
 
 index.html:
 
-```
-<!doctype html>
-<html>
-  <head>
-  </head>
-  <body>
-    <include file='header.html'/>
-    <h1>Content</h1>
-  </body>
-</html>
-```
+    <!doctype html>
+    <html>
+      <head>
+      </head>
+      <body>
+        <include file='header.html'/>
+        <h1>Content</h1>
+      </body>
+    </html>
 
 header.html:
 
-```
-<header>Hello World!</header>
-```
+    <header>Hello World!</header>
 
 Rendered index.html:
 
-```
-<!doctype html>
-<html>
-  <head>
-  </head>
-  <body>
-    <header>Hello World!</header>
-    <h1>Content</h1>
-  </body>
-</html>
-```
+    <!doctype html>
+    <html>
+      <head>
+      </head>
+      <body>
+        <header>Hello World!</header>
+        <h1>Content</h1>
+      </body>
+    </html>
 
 ### Layouts, blocks, definitions
 
-Layouts are top-level markup files with places (blocks) reserved for actual content.
+More complex template composition scenarios involve reusing of _layouts_ (abstract markup that defines document structure) and _components_ (self-contained markup with parameters).
 
-Blocks can be declared anywhere using `<block:block_name>` tag, they can also contain
+These scenarios can be implemented by using includes together with _blocks_ — named placeholders for actual content. Blocks can be declared anywhere using `<block:block_name>` tag, they can also contain
 arbitrary default content.
 
-Concrete pages can provide block definitions using `<def:block_name>` inside
+Concrete pages provide block definitions using `<def:block_name>` inside
 `<include>` tags. Each definition is local to its include (and its descendants)
 but is not "visible" to siblings.
 
@@ -93,41 +112,172 @@ but is not "visible" to siblings.
 
 layout.html:
 
-```
-<!doctype html>
-<html>
-  <head>
-  </head>
-  <body>
-    <block:content/>
-  </body>
-</html>
-```
+    <!doctype html>
+    <html>
+      <head>
+      </head>
+      <body>
+        <block:content/>
+      </body>
+    </html>
 
 index.html:
 
-```
-<include file='layout.html'>
+    <include file='layout.html'>
 
-  <def:content>
-    <h1>Hello World!</h1>
-  </def:content>
+      <def:content>
+        <h1>Hello World!</h1>
+      </def:content>
 
-</include>
-```
+    </include>
 
 Rendered index.html:
 
-```
-<!doctype html>
-<html>
-  <head>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-  </body>
-</html>
-```
+    <!doctype html>
+    <html>
+      <head>
+      </head>
+      <body>
+        <h1>Hello World!</h1>
+      </body>
+    </html>
+
+#### More complex example
+
+It is often convenient to inherit layouts. Consider the following example (based on the previous one).
+
+users/layout.html:
+
+    <include file='../layout.html'>
+
+      <def:content>
+        <nav>
+          <a href='/'>Back to home</a>
+        </nav>
+        <section>
+          <block:content/>
+        </section>
+      </def:content>
+
+    </include>
+
+users/list.html:
+
+    <include file='layout.html'>
+
+      <def:content>
+        <ul>
+          <li>Alice</li>
+          <li>Joe</li>
+          <li>Jane</li>
+        </ul>
+      </def:content>
+
+    </include>
+
+Rendered users/list.html:
+
+    <!doctype html>
+    <html>
+      <head>
+      </head>
+      <body>
+        <nav>
+          <a href='/'>Back to home</a>
+        </nav>
+        <section>
+          <ul>
+            <li>Alice</li>
+            <li>Joe</li>
+            <li>Jane</li>
+          </ul>
+        </section>
+      </body>
+    </html>
+
+You see, users/layout.html provides partial definition for `content` by defining
+another block (with the same name). In fact, the result is quite intuitive if you
+follow the templates code "inside-out" (`users/list.html` -> `users/layout.html` -> `layout.html`).
+
+### Inline file
+
+Use `<inline file="some/file"/>` to include the contents of specified file "as is".
+
+Unline includes, inlined files are not compiled (so blocks and definitions are not supported).
+
+By default, the contents of inlined file will be HTML-escaped to prevent XSS (i.e. `<` are replaced with `&lt;`, '&' with '&amp;', etc.). To disable escaping type `!` at the start of file path `<inline file="!path/to/file"/>`.
+
+## Template Syntax — Dynamic Constructs
+
+Following features involve working with template data (at the render phase).
+
+Most dynamic constructs are _scoped_, i.e. variables defined in inner tags
+are not visible outside.
+
+### Expressions
+
+Expressions are used to access and modify data provided at the rendering phase.
+
+Expressions are parsed with [Angular Expressions](https://github.com/peerigon/angular-expressions)
+which currently represent the safest way to execute simple JavaScript statements
+while disallowing access to potentially harmful constructs like `eval` or `Function`.
+
+Also, Angular expressions are awesome, because they are forgiving to nulls and undefined variables.
+
+#### Interpolation
+
+Expressions like `#{user.name || 'Anonymous'}` are evaluated at rendering phase and their results are included into the rendered templates. In the example above `user` may not exist, or may not have `name` property — in both cases the "Anonymous" will be rendered.
+
+#### Escaping
+
+Expressions in `#{expr}` are HTML-escaped (i.e. `<` are replaced with `&lt;`, `&` — with `&amp;`, etc.) To avoid escaping use `!{expr}` syntax.
+
+### Variable Assignment
+
+Use `<var:myVar>expr</var:myVar>` to define `myVar` variable with value equal to
+the result of `expr` evaluation.
+
+Variables defined on "top-level" scope are bound directly to `data` object, but variables from inner scopes do not leak outside.
+
+### If Statement
+
+Conditional statements are implemented like this:
+
+    <if>
+      <when expr="!friends">
+        <p>You have no friends.</p>
+      </when>
+      <when expr="friends == 1">
+        <p>You have one friend.</p>
+      </when>
+      <when expr="friends > 1 && friends < 5">
+        <p>You have a few friends.</p>
+      </when>
+      <otherwise>
+        <p>You have #{friends} friends.</p>
+      </otherwise>
+    </if>
+
+### Case Statement
+
+Case statements resemble regular switch-case, but allow matching non-declarative conditions:
+
+    <case:e expr="friends">
+      <when expr="1">
+        <p>You have one friend.</p>
+      </when>
+      <when expr="e > 1 && e <= 5">
+        <p>You have a few friends.</p>
+      </when>
+      <when expr="e > 5">
+        <p>You have a #{e} friends.</p>
+      </when>
+      <otherwise>
+        <p>You have no friends.</p>
+      </otherwise>
+    </case:e>
+
+In this example `friends` expression is evaluated and becomes accessible as local variable `e`.
 
 ## Grammar
 

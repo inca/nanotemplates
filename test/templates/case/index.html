@@ -1,0 +1,14 @@
+<case:e expr="friends">
+  <when expr="1">
+    <p>You have one friend.</p>
+  </when>
+  <when expr="e > 1 && e <= 5">
+    <p>You have a few friends.</p>
+  </when>
+  <when expr="e > 5">
+    <p>You have a #{e} friends.</p>
+  </when>
+  <otherwise>
+    <p>You have no friends.</p>
+  </otherwise>
+</case:e>

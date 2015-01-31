@@ -10,6 +10,15 @@ var opts = nomnom
     help: 'input file',
     required: true
   })
+  .option('fn', {
+    flag: true,
+    help: 'show the compiled function instead (--data has no effect)'
+  })
+  .option('data', {
+    abbr: 'd',
+    help: 'data object (JSON)',
+    default: '{}'
+  })
   .option('basedir', {
     abbr: 'b',
     help: 'base directory',
@@ -21,11 +30,24 @@ var nano = new Nano({
   basedir: opts.basedir
 });
 
-nano.render(opts.file, function(err, html) {
-  if (err) {
-    console.trace(err);
-    process.exit(1);
-  }
-  process.stdout.write(html);
-  process.exit(0);
-});
+if (opts.fn) {
+  nano.compile(opts.file, function(err, fn) {
+    if (err) {
+      console.trace(err);
+      process.exit(1);
+    }
+    process.stdout.write(fn.toString());
+    process.exit(0);
+  })
+} else {
+  var data = JSON.parse(opts.data);
+  nano.render(opts.file, data, function(err, html) {
+    if (err) {
+      console.trace(err);
+      process.exit(1);
+    }
+    process.stdout.write(html);
+    process.exit(0);
+  });
+
+}

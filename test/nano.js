@@ -98,7 +98,7 @@ describe('Nano', function() {
 
   });
 
-  it('should process if when cases', function(done) {
+  it('should process if when statements', function(done) {
 
     nano.render('if/index.html', { friends: 2 }, function(err, html) {
       if (err) return done(err);
@@ -107,11 +107,47 @@ describe('Nano', function() {
 
   });
 
-  it('should process if otherwise cases', function(done) {
+  it('should process if otherwise statements', function(done) {
 
     nano.render('if/index.html', { friends: 100500 }, function(err, html) {
       if (err) return done(err);
       assertHtmlFile(html, 'if/_100500.html', done);
+    });
+
+  });
+
+  it('should process case statements without locals', function(done) {
+
+    nano.render('case/index.html', function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'case/_undefined.html', done);
+    });
+
+  });
+
+  it('should process case when constants', function(done) {
+
+    nano.render('case/index.html', { friends: 1 }, function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'case/_1.html', done);
+    });
+
+  });
+
+  it('should process case when expressions', function(done) {
+
+    nano.render('case/index.html', { friends: 2 }, function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'case/_2.html', done);
+    });
+
+  });
+
+  it('should process case otherwise statements', function(done) {
+
+    nano.render('if/index.html', { friends: 100500 }, function(err, html) {
+      if (err) return done(err);
+      assertHtmlFile(html, 'case/_100500.html', done);
     });
 
   });

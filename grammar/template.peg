@@ -27,7 +27,7 @@ IncludeSelfClosing
   }
 
 IncludeWithDefs
-  = tag: IncludeTagStart '>' ws* nodes:IncludeNodes '</include' ws* '>'
+  = tag: IncludeTagStart '>' ws* nodes: IncludeNodes '</include>'
   {
     return {
       type: 'include',
@@ -37,7 +37,7 @@ IncludeWithDefs
   }
 
 IncludeTagStart
-  = '<include' ws+ 'file' ws* '=' ws* file:AttrValue ws*
+  = '<include' ws+ 'file' ws* '=' ws* file: AttrValue ws*
   {
     return {
       file: file
@@ -53,8 +53,8 @@ IncludeNode
 
 // Inline
 
-Inline
-  = '<inline' ws+ 'file' ws* '=' ws* file:AttrValue ws* '/>'
+Inline "inline"
+  = '<inline' ws+ 'file' ws* '=' ws* file: AttrValue ws* '/>'
   {
     return {
       type: 'inline',
@@ -68,9 +68,7 @@ Def "definition"
   = '<' def: DefTag ':' name: VarName ws* '>'
     nodes: Nodes
     '</' _def: DefTag & { return def == _def }
-    ':'
-    _name: VarName & { return name == _name }
-    ws* '>'
+    ':' _name: VarName & { return name == _name } '>'
   {
     return {
       type: 'def',
@@ -104,8 +102,7 @@ BlockSelfClosing
 BlockWithContent
   = '<block:' name: VarName ws* '>'
     nodes: Nodes
-    '</block:' _name: VarName & { return name == _name }
-    ws* '>'
+    '</block:' _name: VarName & { return name == _name } '>'
   {
     return {
       type: 'block',
@@ -116,11 +113,10 @@ BlockWithContent
 
 // Var
 
-Var
+Var "var"
   = '<var:' name: VarName ws* '>'
     expr: $(Plain)
-    '</var:' _name: VarName & { return name == _name }
-    ws* '>'
+    '</var:' _name: VarName & { return name == _name } '>'
   {
     return {
       type: 'var',
@@ -184,6 +180,7 @@ ObjectLiteral
 
 FlowControl
   = IfStatement
+  / CaseStatement
 
 IfStatement "if"
   = '<if>' ws* when: When+ otherwise: Otherwise? '</if>'
@@ -195,8 +192,8 @@ IfStatement "if"
     }
   }
 
-When
-  = '<when' ws+ 'expr' ws* '=' ws* expr:AttrValue ws* '>'
+When "when"
+  = '<when' ws+ 'expr' ws* '=' ws* expr: AttrValue ws* '>'
     nodes: Nodes
     '</when>' ws*
   {
@@ -207,7 +204,7 @@ When
     }
   }
 
-Otherwise
+Otherwise "otherwise"
   = '<otherwise>'
     nodes: Nodes
     '</otherwise>' ws*
@@ -215,6 +212,20 @@ Otherwise
     return {
       type: 'otherwise',
       nodes: nodes
+    }
+  }
+
+CaseStatement "case"
+  = '<case:' name: VarName ws+ 'expr' ws* '=' ws* expr: AttrValue ws* '>'
+     ws* when: When+ otherwise: Otherwise?
+    '</case:' _name: VarName & { return name == _name } '>'
+  {
+    return {
+      type: 'case',
+      name: name,
+      expr: expr,
+      when: when,
+      otherwise: otherwise
     }
   }
 
@@ -250,11 +261,11 @@ AttrValue "attribute value" // without escape sequences
   / DoubleQuoteString
 
 SingleQuoteString "string"
-  = "'" chars:$([^']*) "'"
+  = "'" chars: $([^']*) "'"
   { return chars }
 
 DoubleQuoteString "string"
-  = '"' chars:$([^"]*) '"'
+  = '"' chars: $([^"]*) '"'
   { return chars }
 
 StringLiteral "string" // with escape sequences
