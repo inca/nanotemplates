@@ -1,6 +1,7 @@
 "use strict";
 
 var Nano = require('../lib/nano')
+  , loaders = require('../lib/loaders')
   , fs = require('fs')
   , path = require('path')
   , assert = require('assert');
@@ -176,6 +177,56 @@ describe('Nanotemplates', function() {
         assertHtmlFile(html, 'each/_object.html', done);
       });
 
+  });
+
+});
+
+describe('FileLoader', function() {
+
+  var nano = new Nano({
+    basedir: __dirname + '/templates'
+  });
+
+  it('should reject paths that start with ../', function(done) {
+    nano.render('./dir/../../nano.js', function(err) {
+      if (err) return done();
+      done(new Error('WTF?'));
+    });
+  });
+
+});
+
+describe('FallbackLoader', function() {
+
+  var nano = new Nano({
+    load: loaders.FallbackLoader([
+      loaders.FileLoader(__dirname + '/nonsense'),
+      loaders.FileLoader(__dirname + '/templates/fallback'),
+      loaders.FileLoader(__dirname + '/templates')
+    ])
+  });
+
+  it('should try all loaders in list, ignoring errors', function(done) {
+    nano.render('fallback/index.html', function(err, html) {
+      if (err) return done(err);
+      assertHtml(html, '<p>I win!</p>');
+      done();
+    })
+  });
+
+  it('should load templates with higher priorities', function(done) {
+    nano.render('inlines/index.html', function(err, html) {
+      if (err) return done(err);
+      assertHtml(html, '<p>I win, too!</p>');
+      done();
+    })
+  });
+
+  it('should throw errors when not found', function(done) {
+    nano.render('nonsense/index.html', function(err) {
+      if (err) return done();
+      done(new Error('WTF?'));
+    })
   });
 
 });

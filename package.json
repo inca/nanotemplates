@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "async": "*",
+    "fallback": "*",
     "grunt": "*",
     "grunt-peg": "*",
     "nomnom": "*",
