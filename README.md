@@ -401,14 +401,7 @@ We're glad you asked!
 
 Ultimately the best way to contribute to the project is to try it out and share your opinion. Feel free to fire issues and send pull requests.
 
-If you feel like spending a coin to support good guys, we kindly accept your generosity at [Gratipay](https://gratipay.com/inca) or PayPal (use the button below).
-
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="BJMYW5K7PD5W6">
-<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypalobjects.com/ru_RU/i/scr/pixel.gif" width="1" height="1">
-</form>
+If you feel like spending a coin for a good cause, we kindly accept your generosity at [Gratipay](https://gratipay.com/inca) or PayPal ([boris@okunskiy.name](mailto:boris@okunskiy.name)).
 
 ## License
 
