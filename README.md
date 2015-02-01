@@ -13,7 +13,9 @@ Minimalistic template engine for composing DRY HTML pages.
 
   * **Performance** — once compiled the templates can be cached to provide light-speed rendering
 
-Nanotemplates are best suited for HTML rendering, but you can use them to
+  * **Flexible** — template loading is abstracted from file system: it is easy to implement custom loading (e.g. from database or network).
+
+Nanotemplates are best suited for HTML, but you can use them to
 render virtually any text.
 
 ## Usage
@@ -352,6 +354,11 @@ Additionally, the key is bound to `user_key` variable.
 
 Keys are always sorted in alphabetical order.
 
+## Template Loading
+
+Although it may seem that Nanotemplates heavily depend on file system, the engine
+itself is abstracted.
+
 ## Grammar
 
 A [PegJS](http://pegjs.org) grammar [is available](https://github.com/inca/nanotemplates/tree/master/grammar/template.peg).
@@ -375,7 +382,7 @@ Compilation is done like this:
 
 ## Premise
 
-There are lots of template engines for Node.js, both [simple](http://underscorejs.org) and [monstrous](http://jade-lang.com).
+There are lots of template engines for Node.js, both [simple](http://underscorejs.org) and [immense](http://jade-lang.com).
 
 Just like you we hate reinventing the wheels. However, we started this project, because, apparently, no template engine out there can simultaneously meet three following conditions:
 
@@ -387,6 +394,21 @@ Just like you we hate reinventing the wheels. However, we started this project, 
     templates from database or via network)
 
 We hope that Nanotemplates are what you are expecting them to be.
+
+## Contributing
+
+We're glad you asked!
+
+Ultimately the best way to contribute to the project is to try it out and share your opinion. Feel free to fire issues and send pull requests.
+
+If you feel like spending a coin to support good guys, we kindly accept your generosity at [Gratipay](https://gratipay.com/inca) or PayPal (use the button below).
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="BJMYW5K7PD5W6">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/ru_RU/i/scr/pixel.gif" width="1" height="1">
+</form>
 
 ## License
 
