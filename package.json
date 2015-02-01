@@ -11,7 +11,8 @@
     "grunt": "*",
     "grunt-peg": "*",
     "nomnom": "*",
-    "angular-expressions": "*"
+    "angular-expressions": "*",
+    "lru-cache": "*"
   },
   "devDependencies": {
     "mocha": "*"

@@ -20,7 +20,7 @@ function assertHtmlFile(actual, expectedFile, cb) {
     });
 }
 
-describe('Nano', function() {
+describe('Nanotemplates', function() {
 
   var nano = new Nano({
     basedir: __dirname + '/templates'
