@@ -13,7 +13,9 @@ Minimalistic template engine for composing DRY HTML pages.
 
   * **Performance** — once compiled the templates can be cached to provide light-speed rendering
 
-  * **Flexible** — template loading is abstracted from file system: it is easy to implement custom loading (e.g. from database or network).
+  * **Flexible** — template loading is abstracted from file system: it is easy to implement custom loading (e.g. from database or network)
+
+  * **Asynchronous compiler** — no `fs.readFileSync`s (hello, Jade!)
 
 Nanotemplates are best suited for HTML, but you can use them to
 render virtually any text.
