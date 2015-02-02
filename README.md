@@ -264,6 +264,10 @@ Conditional statements are implemented like this:
       </otherwise>
     </if>
 
+Simple single-expression ifs are also supported:
+
+    <if expr='happy'>Yay!</if>
+
 ### Case Statement
 
 Case statements resemble regular switch-case, but allow matching non-declarative conditions:
@@ -320,8 +324,12 @@ Here's what will be rendered:
     </ul>
 
 There you define the `user` variable which will hold the value on each iteration.
-Additionally, the `user_index` will contain the numeric zero-based index of
-an element on each iteration.
+
+Some additional variables become available inside `<each:user>` scope:
+
+  * `user_index` — zero-based index of current element;
+  * `user_last` — boolean indicating whether current element is the last one;
+  * `user_has_next` — same as `!user_last`
 
 #### Each with Object
 
@@ -351,10 +359,14 @@ Here's what will be rendered:
       <li>bob: Bob</li>
     </ul>
 
-Again, `user` variable holds the value on each iteration.
-Additionally, the key is bound to `user_key` variable.
+Again, `user` variable holds the value on each iteration. Keys are always
+sorted in alphabetical order.
 
-Keys are always sorted in alphabetical order.
+Some additional variables become available inside `<each:user>` scope:
+
+  * `user_key` — key of current element;
+  * `user_last` — boolean indicating whether current element is the last one;
+  * `user_has_next` — same as `!user_last`
 
 ## Template Loading
 
