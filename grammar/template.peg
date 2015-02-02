@@ -184,14 +184,33 @@ FlowControl
   / EachStatement
 
 IfStatement "if"
-  = '<if>' ws* when: When+ otherwise: Otherwise? '</if>'
+  = IfStandalone
+  / IfCompound
+
+IfStandalone
+  = '<if' ws+ 'expr' ws* '=' ws* expr: AttrValue ws* '>'
+    nodes: Nodes
+    '</if>'
   {
     return {
       type: 'if',
-      when: when,
-      otherwise: otherwise
+      when: [{
+        type: 'when',
+        expr: expr,
+        nodes: nodes
+      }]
     }
   }
+
+IfCompound
+  = '<if>' ws* when: When+ otherwise: Otherwise? '</if>'
+    {
+      return {
+        type: 'if',
+        when: when,
+        otherwise: otherwise
+      }
+    }
 
 When "when"
   = '<when' ws+ 'expr' ws* '=' ws* expr: AttrValue ws* '>'

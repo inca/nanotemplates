@@ -1,7 +1,12 @@
 ${user = 'don\'t'}
 <ul>
   <each:user in="users">
-    <li>#{user_key}: #{user.name || user}</li>
+    <li>
+      #{user_key}: #{user.name || user}<if expr="user_has_next">,</if>
+    </li>
+    <if expr="user_last">
+      <li><a href="#">Load more</a></li>
+    </if>
   </each:user>
 </ul>
 <p>Locals #{user} leak!</p>
