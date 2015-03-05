@@ -2,13 +2,16 @@ Nodes
   = Node*
 
 Node
+  = NanoNode
+  / Plain
+
+NanoNode
   = Include
   / Inline
   / Block
   / Var
   / FlowControl
   / Expression
-  / Plain
 
 // Includes
 
@@ -115,7 +118,7 @@ BlockWithContent
 
 Var "var"
   = '<var:' name: VarName ws* '>'
-    expr: $(Plain)
+    expr: $(ExpressionTokens)
     '</var:' _name: VarName & { return name == _name } '>'
   {
     return {
