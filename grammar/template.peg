@@ -267,24 +267,26 @@ EachStatement "each"
 
 // Plain text
 
+Keyword
+  = 'include'
+  / 'inline'
+  / 'block:' VarName
+  / 'def:' VarName
+  / 'append:' VarName
+  / 'prepend:' VarName
+  / 'if'
+  / 'case:' VarName
+  / 'when'
+  / 'otherwise'
+  / 'each:' VarName
+  / 'var:' VarName
+
 Plain "plain text"
   = $(PlainToken+)
 
 PlainToken
   = [^<#!$]
-  / '<' '/'?
-    !'include'
-    !'inline'
-    !'block'
-    !'def'
-    !'append'
-    !'prepend'
-    !'if'
-    !'case'
-    !'when'
-    !'otherwise'
-    !'each'
-    !'var'
+  / '<' '/'? !(Keyword (ws / '/' / '>'))
   / [#!$] !'{'
 
 // Commons
