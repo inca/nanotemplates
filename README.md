@@ -1,6 +1,6 @@
 # Nanotemplates
 
-Minimalistic template engine for composing DRY HTML pages.
+Minimalistic template engine for composing DRY HTML and SVG.
 
 ## Key features
 
@@ -17,7 +17,7 @@ Minimalistic template engine for composing DRY HTML pages.
 
   * **Asynchronous compiler** — no `fs.readFileSync`s (hello, Jade!)
 
-Nanotemplates are best suited for HTML, but you can use them to
+Nanotemplates are best suited for HTML and SVG, but you can use them to
 render virtually any text.
 
 ## Usage
@@ -414,8 +414,6 @@ We hope that Nanotemplates are what you are expecting them to be.
 We're glad you asked!
 
 Ultimately the best way to contribute to the project is to try it out and share your opinion. Feel free to fire issues and send pull requests.
-
-If you feel like spending a coin for a good cause, we kindly accept your generosity at [Gratipay](https://gratipay.com/inca) or PayPal ([boris@okunskiy.name](mailto:boris@okunskiy.name)).
 
 ## License
 
