@@ -9,6 +9,7 @@ NanoNode
   = Include
   / Inline
   / Block
+  / Comment
   / Var
   / FlowControl
   / Expression
@@ -113,6 +114,20 @@ BlockWithContent
       nodes: nodes
     }
   }
+
+// Comments
+
+Comment "comment"
+  = '<!--' content: $(CommentToken*) '-->'
+  {
+    return {
+      type: 'comment',
+      content: content
+    }
+  }
+
+CommentToken
+  = !'-->' .
 
 // Var
 
@@ -286,7 +301,7 @@ Plain "plain text"
 
 PlainToken
   = [^<#!$]
-  / '<' '/'? !(Keyword (ws / '/' / '>'))
+  / '<' !('/'? Keyword (ws / '/' / '>')) !('!--')
   / [#!$] !'{'
 
 // Commons

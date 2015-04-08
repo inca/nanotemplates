@@ -179,6 +179,31 @@ describe('Nanotemplates', function() {
 
   });
 
+  it('should not strip comments by default', function(done) {
+
+    nano.render('comments/index.html',
+      function(err, html) {
+        if (err) return done(err);
+        assertHtmlFile(html, 'comments/_index.html', done);
+      });
+
+  });
+
+  it('should strip comments when told to', function(done) {
+
+    var nano = new Nano({
+      basedir: __dirname + '/templates',
+      stripComments: true
+    });
+
+    nano.render('comments/index.html',
+      function(err, html) {
+        if (err) return done(err);
+        assertHtmlFile(html, 'comments/_stripped.html', done);
+      });
+
+  });
+
 });
 
 describe('FileLoader', function() {

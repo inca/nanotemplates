@@ -24,10 +24,17 @@ var opts = nomnom
     help: 'base directory',
     default: process.cwd()
   })
+  .option('strip', {
+    abbr: 's',
+    help: 'strip HTML comments',
+    flag: true,
+    default: false
+  })
   .parse();
 
 var nano = new Nano({
-  basedir: opts.basedir
+  basedir: opts.basedir,
+  stripComments: opts.strip
 });
 
 if (opts.fn) {
