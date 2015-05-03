@@ -2,7 +2,7 @@
   "name": "nanotemplates",
   "version": "0.4.0",
   "description": "Nanotemplates",
-  "main": "lib/nano.js",
+  "main": "lib/main.js",
   "bin": {
     "ntl": "bin/ntl"
   },
@@ -11,12 +11,25 @@
     "fallback": "*",
     "nomnom": "*",
     "angular-expressions": "*",
-    "lru-cache": "*"
+    "lru-cache": "*",
+    "path-browserify": "*",
+    "glob": "*"
   },
   "devDependencies": {
     "mocha": "*",
     "grunt": "*",
-    "grunt-peg": "*"
+    "grunt-peg": "*",
+    "brfs": "*"
+  },
+  "browser": {
+    "lib/main.js": "lib/browser.js",
+    "path": "path-browserify",
+    "fs": false,
+    "nomnom": false,
+    "glob": false
+  },
+  "browserify": {
+    "transform": ["brfs"]
   },
   "scripts": {
     "test": "mocha -R spec"

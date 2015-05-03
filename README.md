@@ -1,6 +1,6 @@
 # Nanotemplates
 
-Minimalistic template engine for composing DRY HTML and SVG.
+Isomorphic template engine for composing DRY HTML and SVG.
 
 ## Key features
 
@@ -19,6 +19,9 @@ Minimalistic template engine for composing DRY HTML and SVG.
 
 Nanotemplates are best suited for HTML and SVG, but you can use them to
 render virtually any text.
+
+Since v.0.5.0 Nanotemplates also work perfectly in browsers, resolving
+bundled templates from script tags.
 
 ## Usage
 
