@@ -1,7 +1,8 @@
 "use strict";
 
 var Nano = require('../lib/nano')
-  , loaders = require('../lib/loaders')
+  , FallbackLoader = require('../lib/loaders/fallback')
+  , FileLoader = require('../lib/loaders/fs')
   , fs = require('fs')
   , path = require('path')
   , assert = require('assert');
@@ -224,10 +225,10 @@ describe('FileLoader', function() {
 describe('FallbackLoader', function() {
 
   var nano = new Nano({
-    load: loaders.FallbackLoader([
-      loaders.FileLoader(__dirname + '/nonsense'),
-      loaders.FileLoader(__dirname + '/templates/fallback'),
-      loaders.FileLoader(__dirname + '/templates')
+    load: FallbackLoader([
+      FileLoader(__dirname + '/nonsense'),
+      FileLoader(__dirname + '/templates/fallback'),
+      FileLoader(__dirname + '/templates')
     ])
   });
 
