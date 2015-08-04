@@ -1,8 +1,8 @@
 'use strict';
 
 var Nano = require('../lib/nano')
-  , FallbackLoader = require('../lib/loaders/fallback')
-  , FileLoader = require('../lib/loaders/fs')
+  , fallbackLoader = require('../lib/loaders/fallback')
+  , fileLoader = require('../lib/loaders/fs')
   , fs = require('fs')
   , path = require('path')
   , assert = require('assert');
@@ -207,7 +207,7 @@ describe('Nanotemplates', function () {
 
 });
 
-describe('FileLoader', function () {
+describe('fileLoader', function () {
 
   var nano = new Nano({
     basedir: __dirname + '/templates'
@@ -222,13 +222,13 @@ describe('FileLoader', function () {
 
 });
 
-describe('FallbackLoader', function () {
+describe('fallbackLoader', function () {
 
   var nano = new Nano({
-    load: new FallbackLoader([
-      new FileLoader(__dirname + '/nonsense'),
-      new FileLoader(__dirname + '/templates/fallback'),
-      new FileLoader(__dirname + '/templates')
+    load: fallbackLoader([
+      fileLoader(__dirname + '/nonsense'),
+      fileLoader(__dirname + '/templates/fallback'),
+      fileLoader(__dirname + '/templates')
     ])
   });
 
