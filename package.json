@@ -1,6 +1,6 @@
 {
   "name": "nanotemplates",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Nanotemplates",
   "main": "lib/main.js",
   "bin": {
@@ -23,7 +23,9 @@
     "eslint": "~0.x.x",
     "pre-commit": "*"
   },
-  "pre-commit": [ "test" ],
+  "pre-commit": [
+    "test"
+  ],
   "browser": {
     "lib/main.js": "lib/browser.js",
     "path": "path-browserify",
