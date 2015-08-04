@@ -32,12 +32,12 @@ var nano = require('nanotemplates')({
 });
 
 // Render file
-nano.render('path/to/template.html', { data: 'values' }, function(err, html) {
+nano.render('path/to/template.html', { data: 'values' }, function (err, html) {
   // ...
 });
 
 // Compile into reusable template
-nano.compile('path/to/template.html', function(err, fn) {
+nano.compile('path/to/template.html', function (err, fn) {
   // ...
   fn({ data: 'values' });
 });
@@ -395,7 +395,7 @@ Compilation is done like this:
   * expressions are compiled via Angular Expressions library, each expression is pushed into an array and becomes available inside code via `$$[<index>]`;
   * `locals` object is the data you provide to compiled function at rendering stage;
   * every scope-sensitive code is wrapped into a function, which copies locals object;
-  * all statements are simply joined with semicolon and are wrapped into `function(locals) { }`
+  * all statements are simply joined with semicolon and are wrapped into `function (locals) { }`
 
 ## Premise
 

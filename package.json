@@ -19,8 +19,11 @@
     "mocha": "*",
     "grunt": "*",
     "grunt-peg": "*",
-    "brfs": "*"
+    "brfs": "*",
+    "eslint": "~0.x.x",
+    "pre-commit": "*"
   },
+  "pre-commit": [ "test" ],
   "browser": {
     "lib/main.js": "lib/browser.js",
     "path": "path-browserify",
@@ -34,6 +37,7 @@
     ]
   },
   "scripts": {
+    "pretest": "eslint .",
     "test": "mocha -R spec"
   },
   "repository": {

@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   grunt.initConfig({
     peg: {
       compile: {
-        src: "grammar/template.peg",
-        dest: "lib/parser.js"
+        src: 'grammar/template.peg',
+        dest: 'lib/parser.js'
       }
     }
   });

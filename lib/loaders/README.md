@@ -11,7 +11,7 @@ The whole idea is based on so-called "local paths":
   
   * compiler takes care to forbid paths that "leak" outside this virtual root.
 
-Template loader is simply a `function(localPath, callback)`,
+Template loader is simply a `function (localPath, callback)`,
 which loads template content and invokes `callback(err, content)`.
  
 We provide a file system loader since it is the most common use case on server,
